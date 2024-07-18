@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://cdn3.iconfinder.com/data/icons/internet-security-2-1/33/anti_hacker-512.png">
+    <title>Balance Ton Quoi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h2>Numéros de secours</h2>
+        <p>112 | 17 | 119</p>
+    </header>
+    <div class="container">
+        <h1>Signaler un Incident</h1>
+        <form id="agresseurForm" onsubmit="return false;">
+            <label for="pseudo">Nom/Pseudo</label>
+            <input type="text" id="pseudo" name="pseudo" placeholder="Son nom ou pseudo" required>
+
+            <label for="emailAgg">Email</label>
+            <input type="email" id="emailAgg" name="emailAgg" placeholder="Son email" required>
+
+            <label for="telephoneAgg">Téléphone</label>
+            <input type="tel" id="telephoneAgg" name="telephoneAgg" placeholder="Son téléphone" required>
+
+            <label for="messageAgg">Votre histoire</label>
+            <textarea id="messageAgg" name="messageAgg" rows="4" placeholder="Racontez votre histoire" required></textarea>
+
+            <label for="descriptionAgg">Description physique ou lien vers une image</label>
+            <textarea id="descriptionAgg" name="descriptionAgg" rows="2" placeholder="Description ou lien d'image" required></textarea>
+
+            <button type="button" onclick="nextStep()">Suivant</button>
+        </form>
+
+        <form id="victimeForm" style="display: none;" onsubmit="return false;">
+            <label for="nomVictime">Nom</label>
+            <input type="text" id="nomVictime" name="nomVictime" placeholder="Votre nom" required>
+
+            <label for="prenomVictime">Prénom</label>
+            <input type="text" id="prenomVictime" name="prenomVictime" placeholder="Votre prénom" required>
+
+            <label for="ageVictime">Âge</label>
+            <input type="number" id="ageVictime" name="ageVictime" placeholder="Votre âge" required>
+
+            <label for="contactVictime">Numéro ou Email</label>
+            <input type="text" id="contactVictime" name="contactVictime" placeholder="Votre numéro ou email" required>
+
+            <button type="button" onclick="envoyerEmail()">Envoyer</button>
+        </form>
+
+        <div id="anonymatMessage" style="display: none;">
+            <p>Voulez-vous rester anonyme ou être recontacté ?</p>
+            <button onclick="handleAnonymat(true)">Rester anonyme</button>
+            <button onclick="handleAnonymat(false)">Être recontacté</button>
+        </div>
+    </div>
+
+    <script>
+        function nextStep() {
+            // Cache le formulaire de l'agresseur
+            document.getElementById('agresseurForm').style.display = 'none';
+
+            // Affiche le message de choix d'anonymat
+            document.getElementById('anonymatMessage').style.display = 'block';
+        }
+
+        function handleAnonymat(isAnonymous) {
+            if (isAnonymous) {
+                // Message de confirmation
+                alert("Merci pour votre signalement. Si vous avez besoin de parler, contactez les numéros d'urgence : 112, 17, 119");
+                document.getElementById('anonymatMessage').style.display = 'none';
+                document.getElementById('agresseurForm').reset();
+            } else {
+                // Affiche le formulaire de la victime
+                document.getElementById('anonymatMessage').style.display = 'none';
+                document.getElementById('victimeForm').style.display = 'block';
+            }
+        }
+
+        function envoyerEmail() {
+            const pseudo = document.getElementById('pseudo').value;
+            const emailAgg = document.getElementById('emailAgg').value;
+            const telephoneAgg = document.getElementById('telephoneAgg').value;
+            const messageAgg = document.getElementById('messageAgg').value;
+            const descriptionAgg = document.getElementById('descriptionAgg').value;
+
+            const nomVictime = document.getElementById('nomVictime').value;
+            const prenomVictime = document.getElementById('prenomVictime').value;
+            const ageVictime = document.getElementById('ageVictime').value;
+            const contactVictime = document.getElementById('contactVictime').value;
+
+            const subject = encodeURIComponent('Signalement d\'incident');
+            const body = encodeURIComponent(
+                `Agresseur:\nNom/Pseudo: ${pseudo}\nEmail: ${emailAgg}\nTéléphone: ${telephoneAgg}\nSon histoire: ${messageAgg}\nDescription: ${descriptionAgg}\n\nVictime:\nNom: ${nomVictime}\nPrénom: ${prenomVictime}\nÂge: ${ageVictime}\nContact: ${contactVictime}`
+            );
+
+            window.location.href = `mailto:luccabondi@gmail.com?subject=${subject}&body=${body}`;
+        }
+    </script>
+</body>
+</html>
